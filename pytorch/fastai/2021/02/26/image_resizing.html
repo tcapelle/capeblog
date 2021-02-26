@@ -14,11 +14,11 @@
 <link rel="canonical" href="https://tcapelle.github.io/capeblog/pytorch/fastai/2021/02/26/image_resizing.html" />
 <meta property="og:url" content="https://tcapelle.github.io/capeblog/pytorch/fastai/2021/02/26/image_resizing.html" />
 <meta property="og:site_name" content="capeblog" />
-<meta property="og:image" content="https://tcapelle.github.io/capeblog/images/pil2tensor.png" />
+<meta property="og:image" content="https://tcapelle.github.io/capeblog/images/copied_from_nb/resize_images/pil2tensor.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-02-26T00:00:00-06:00" />
 <script type="application/ld+json">
-{"url":"https://tcapelle.github.io/capeblog/pytorch/fastai/2021/02/26/image_resizing.html","@type":"BlogPosting","headline":"The Devil lives in the details","dateModified":"2021-02-26T00:00:00-06:00","datePublished":"2021-02-26T00:00:00-06:00","image":"https://tcapelle.github.io/capeblog/images/pil2tensor.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://tcapelle.github.io/capeblog/pytorch/fastai/2021/02/26/image_resizing.html"},"author":{"@type":"Person","name":"Thomas Capelle"},"description":"Resizing method matters…","@context":"https://schema.org"}</script>
+{"url":"https://tcapelle.github.io/capeblog/pytorch/fastai/2021/02/26/image_resizing.html","@type":"BlogPosting","headline":"The Devil lives in the details","dateModified":"2021-02-26T00:00:00-06:00","datePublished":"2021-02-26T00:00:00-06:00","image":"https://tcapelle.github.io/capeblog/images/copied_from_nb/resize_images/pil2tensor.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://tcapelle.github.io/capeblog/pytorch/fastai/2021/02/26/image_resizing.html"},"author":{"@type":"Person","name":"Thomas Capelle"},"description":"Resizing method matters…","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/capeblog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://tcapelle.github.io/capeblog/feed.xml" title="capeblog" /><link rel="shortcut icon" type="image/x-icon" href="/capeblog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
@@ -149,7 +149,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="/capeblog/images/copied_from_nb/images/pil2tensor.png" alt="(TL;DR"></p>
+<p><img src="/capeblog/images/copied_from_nb/resize_images/pil2tensor.png" alt="(TL;DR"></p>
 
 </div>
 </div>
@@ -157,7 +157,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Yesterday I was refactoring some code to put on our production code base. It is a simple image classifier trained with fastai. In our deployement env we are not including fastai as requirements and rely only on pure pytorch to process the data and make the inferece. (I am waiting to finally be able to install only the fastai vision part, without the NLP dependencies, this is coming soon, probably in fastai 2.3, at least it is in <a href="https://github.com/fastai/fastai/projects/1#card-52606857">Jeremy's roadmap</a>). So, I have to make the reading and preprocessing of images as close as possible as fastai <code>Transform</code> pipeline, to get accurate model outputs.</p>
+<p>Yesterday I was refactoring some code to put on our production code base. It is a simple image classifier trained with fastai. In our deployment env we are not including fastai as requirements and rely only on pure pytorch to process the data and make the inference. (I am waiting to finally be able to install only the fastai vision part, without the NLP dependencies, this is coming soon, probably in fastai 2.3, at least it is in <a href="https://github.com/fastai/fastai/projects/1#card-52606857">Jeremy's roadmap</a>). So, I have to make the reading and preprocessing of images as close as possible as fastai <code>Transform</code> pipeline, to get accurate model outputs.</p>
 <p>Let's take a quick look on the preprocessing used for training and there corresponding torch version with the new tensor API as shown <a href="https://github.com/pytorch/vision/blob/master/examples/python/tensor_transforms.ipynb">here</a></p>
 
 </div>
@@ -821,7 +821,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>read_image</code> is pretty neat, it actually read directly the image to a pytorch tensor, so no need for external image libraries. Using this API has many advantages, as one can group the model and part of the preprocessing as whole, and then export to torchscript all togeter: model + preprocessing, as shown in the example <a href="https://github.com/pytorch/vision/blob/master/examples/python/tensor_transforms.ipynb">here</a></p>
+<p><code>read_image</code> is pretty neat, it actually read directly the image to a pytorch tensor, so no need for external image libraries. Using this API has many advantages, as one can group the model and part of the preprocessing as whole, and then export to torchscript all together: model + preprocessing, as shown in the example <a href="https://github.com/pytorch/vision/blob/master/examples/python/tensor_transforms.ipynb">here</a></p>
 
 </div>
 </div>
@@ -1052,7 +1052,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's zoome and plot</p>
+<p>Let's zoom and plot</p>
 
 </div>
 </div>
@@ -1474,7 +1474,7 @@ window.onload = wrap_img;
 <h2 id="Conclusions">
 <a class="anchor" href="#Conclusions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conclusions<a class="anchor-link" href="#Conclusions"> </a>
 </h2>
-<p>Ideally, deploy the model with the exact same transforms as it was validated. Or at least, check that the preformance does not degrade.
+<p>Ideally, deploy the model with the exact same transforms as it was validated. Or at least, check that the performance does not degrade.
 I would like to see more consistency between both API in pure pytorch, as the user is pushed to use the new <code>pillow-free</code> pipeline, but results are not consistent. Resize is a fundamental part of the image preprocessing in most user cases.</p>
 <ul>
 <li>There is an issue <a href="https://github.com/pytorch/vision/issues/2950">open</a> on the torchvision github about this.</li>
