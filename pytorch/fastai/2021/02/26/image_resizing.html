@@ -155,7 +155,10 @@ window.onload = wrap_img;
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Yesterday I was refactoring some code to put on our production code base. It is a simple image classifier trained with fastai. In our deployment env we are not including fastai as requirements and rely only on pure pytorch to process the data and make the inference. (I am waiting to finally be able to install only the fastai vision part, without the NLP dependencies, this is coming soon, probably in fastai 2.3, at least it is in <a href="https://github.com/fastai/fastai/projects/1#card-52606857">Jeremy's roadmap</a>). So, I have to make the reading and preprocessing of images as close as possible as fastai <code>Transform</code> pipeline, to get accurate model outputs.</p>
 <p>After converting the transforms to <code>torchvision.transforms</code> I noticed that my model performance dropped significantly. Initially I thought that it was fastai's fault, but all the problem came from the new interaction between the <code>tochvision.io.images.read_image</code> and the <code>torchvision.transforms.Resize</code>. This transform can accept <code>PIL.Image.Image</code> or Tensors, in short, the resizing does not produce the same image, one is way softer than the other. The solution was not to use the new Tensor API and just use <code>PIL</code> as the image reader.</p>
-<p>Let's take a quick look on the preprocessing used for training and there corresponding torch version with the new tensor API as shown <a href="https://github.com/pytorch/vision/blob/master/examples/python/tensor_transforms.ipynb">here</a></p>
+<blockquote>
+<p>TL;DR :torchvision's <code>Resize</code> behaves differently if the input is a <code>PIL.Image</code> or a torch tensor from <code>read_image</code>. Be consistent at training / deploy.
+Let's take a quick look on the preprocessing used for training and there corresponding torch version with the new tensor API as shown <a href="https://github.com/pytorch/vision/blob/master/examples/python/tensor_transforms.ipynb">here</a></p>
+</blockquote>
 
 </div>
 </div>
@@ -165,12 +168,12 @@ window.onload = wrap_img;
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Below are the versions of fastai, fastcore, torch, and torchvision currently running at the time of writing this:</p>
 <ul>
-<li>python       : 3.8.6</li>
-<li>fastai       : 2.2.8</li>
-<li>fastcore     : 1.3.19</li>
-<li>torch        : 1.7.1</li>
-<li>torch cuda   : 11.0</li>
-<li>torchvision  2.2.8: 0.8.2</li>
+<li>'python'       : 3.8.6</li>
+<li>'fastai'       : 2.2.8</li>
+<li>'fastcore'     : 1.3.19</li>
+<li>'torch'        : 1.7.1</li>
+<li>'torch' cuda   : 11.0</li>
+<li>'torchvision'  2.2.8: 0.8.2</li>
 </ul>
 <p>you get this from <code>fastai.test_utils.show_install</code></p>
 
@@ -1118,7 +1121,7 @@ window.onload = wrap_img;
 <a class="anchor" href="#Extra:-What-if-I-want-to-use-OpenCV?" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extra: What if I want to use OpenCV?<a class="anchor-link" href="#Extra:-What-if-I-want-to-use-OpenCV?"> </a>
 </h2>
 <blockquote>
-<p>A popular choice for pilepines that rely on numpy array transforms, as <a href="https://github.com/albumentations-team/albumentations/blob/master/docs/index.rst">Albumnetation</a></p>
+<p>A popular choice for pipelines that rely on numpy array transforms, as <a href="https://github.com/albumentations-team/albumentations/blob/master/docs/index.rst">Albumnetation</a></p>
 </blockquote>
 
 </div>
