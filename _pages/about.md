@@ -4,8 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
+I Thomas Capelle, a Ml engineer at [SteadySun](https://www.steady-sun.com/). I am interested on ML/DL in general, acive contributor of fastai.
+Currently, I have been exploring on model serving and deploying, and the various details that may make your model crash or perform poorly.
 
-
-
-[^1]:a blogging platform that natively supports Jupyter notebooks in addition to other formats.
+For more info and my detailed CV, you can check my minimal website [here](https://tcapelle.github.io/)
