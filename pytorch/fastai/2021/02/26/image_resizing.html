@@ -80,7 +80,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      4 min read
+      5 min read
     
 </span></p>
 
@@ -803,17 +803,13 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Let's try this new Tensor based API that torchvision introduced on <code>v0.8</code> then!</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Torchvision-new-Tensor-API">
 <a class="anchor" href="#Torchvision-new-Tensor-API" aria-hidden="true"><span class="octicon octicon-link"></span></a>Torchvision new Tensor API<a class="anchor-link" href="#Torchvision-new-Tensor-API"> </a>
 </h2>
+<blockquote>
+<p>Let's try this new Tensor based API that torchvision introduced on <code>v0.8</code> then!</p>
+</blockquote>
+
 </div>
 </div>
 </div>
@@ -835,6 +831,14 @@ window.onload = wrap_img;
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>read_image</code> is pretty neat, it actually read directly the image to a pytorch tensor, so no need for external image libraries. Using this API has many advantages, as one can group the model and part of the preprocessing as whole, and then export to torchscript all togeter: model + preprocessing, as shown in the example <a href="https://github.com/pytorch/vision/blob/master/examples/python/tensor_transforms.ipynb">here</a></p>
+
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -1102,9 +1106,21 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>The <code>PIL</code> image is smoother, it is not necesarily better, but it is different. From my testing, for darker images the <code>PIL</code> reisze has less moire effect (less noise)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Extra:-What-if-I-want-to-use-OpenCV?">
 <a class="anchor" href="#Extra:-What-if-I-want-to-use-OpenCV?" aria-hidden="true"><span class="octicon octicon-link"></span></a>Extra: What if I want to use OpenCV?<a class="anchor-link" href="#Extra:-What-if-I-want-to-use-OpenCV?"> </a>
 </h2>
+<blockquote>
+<p>A popular choice for pilepines that rely on numpy array transforms, as <a href="https://github.com/albumentations-team/albumentations/blob/master/docs/index.rst">Albumnetation</a></p>
+</blockquote>
+
 </div>
 </div>
 </div>
