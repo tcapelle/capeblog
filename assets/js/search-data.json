@@ -18,7 +18,7 @@
   
       ,"page1": {
           "title": "About Me",
-          "content": "I Thomas Capelle, a Ml engineer at SteadySun. I am interested on ML/DL in general, acive contributor of fastai. Currently, I have been exploring on model serving and deploying, and the various details that may make your model crash or perform poorly. . For more info and my detailed CV, you can check my minimal website here .",
+          "content": "I am Ml engineer at SteadySun. I am interested on ML/DL in general, acive contributor of fastai. Currently, I have been exploring on model serving and deploying, and the various details that may make your model crash or perform poorly. . For more info and my detailed CV, you can check my minimal website here . Thomas Capelle. .",
           "url": "https://tcapelle.github.io/capeblog/about/",
           "relUrl": "/about/",
           "date": ""
