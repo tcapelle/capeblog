@@ -81,7 +81,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      7 min read
+      6 min read
     
 </span></p>
 
@@ -157,9 +157,16 @@ window.onload = wrap_img;
 <p>Yesterday I was refactoring some code to put on our production code base. It is a simple image classifier trained with fastai. In our deployment env we are not including fastai as requirements and rely only on pure pytorch to process the data and make the inference. (I am waiting to finally be able to install only the fastai vision part, without the NLP dependencies, this is coming soon, probably in fastai 2.3, at least it is in <a href="https://github.com/fastai/fastai/projects/1#card-52606857">Jeremy's roadmap</a>). So, I have to make the reading and preprocessing of images as close as possible as fastai <code>Transform</code> pipeline, to get accurate model outputs.</p>
 <p>After converting the transforms to <code>torchvision.transforms</code> I noticed that my model performance dropped significantly. Initially I thought that it was fastai's fault, but all the problem came from the new interaction between the <code>tochvision.io.images.read_image</code> and the <code>torchvision.transforms.Resize</code>. This transform can accept <code>PIL.Image.Image</code> or Tensors, in short, the resizing does not produce the same image, one is way softer than the other. The solution was not to use the new Tensor API and just use <code>PIL</code> as the image reader.</p>
 <blockquote>
-<p>TL;DR :torchvision's <code>Resize</code> behaves differently if the input is a <code>PIL.Image</code> or a torch tensor from <code>read_image</code>. Be consistent at training / deploy.
-Let's take a quick look on the preprocessing used for training and there corresponding torch version with the new tensor API as shown <a href="https://github.com/pytorch/vision/blob/master/examples/python/tensor_transforms.ipynb">here</a></p>
+<p>TL;DR :torchvision's <code>Resize</code> behaves differently if the input is a <code>PIL.Image</code> or a torch tensor from <code>read_image</code>. Be consistent at training / deploy.</p>
 </blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's take a quick look on the preprocessing used for training and there corresponding torch version with the new tensor API as shown <a href="https://github.com/pytorch/vision/blob/master/examples/python/tensor_transforms.ipynb">here</a></p>
 
 </div>
 </div>
@@ -169,14 +176,24 @@ Let's take a quick look on the preprocessing used for training and there corresp
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Below are the versions of fastai, fastcore, torch, and torchvision currently running at the time of writing this:</p>
 <ul>
-<li>'python'       : 3.8.6</li>
-<li>'fastai'       : 2.2.8</li>
-<li>'fastcore'     : 1.3.19</li>
-<li>'torch'        : 1.7.1</li>
-<li>'torch' cuda   : 11.0</li>
-<li>'torchvision'  2.2.8: 0.8.2</li>
+<li>
+<code>python</code>       : 3.8.6</li>
+<li>
+<code>fastai</code>       : 2.2.8</li>
+<li>
+<code>fastcore</code>     : 1.3.19</li>
+<li>
+<code>torch</code>        : 1.7.1</li>
+<li>
+<code>torch-cuda</code>   : 11.0</li>
+<li>
+<code>torchvision</code>  : 2.2.8: 0.8.2
+<div class="flash">
+    <svg class="octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+    <strong>Note: </strong>You can easily grab this info from <code>fastai.test_utils.show_install</code>
+</div>
+</li>
 </ul>
-<p>you get this from <code>fastai.test_utils.show_install</code></p>
 
 </div>
 </div>
@@ -1116,61 +1133,6 @@ Let's take a quick look on the preprocessing used for training and there corresp
 </div>
 </div>
 </div>
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">res_pil_img</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="output_area">
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>tensor([[[ 84,  87,  97,  ..., 197, 208, 199],
-         [ 95, 106, 116,  ..., 200, 203, 201],
-         [118, 126, 138,  ..., 203, 208, 200],
-         ...,
-         [186, 188, 188,  ..., 187, 187, 188],
-         [187, 187, 188,  ..., 189, 188, 189],
-         [187, 188, 190,  ..., 191, 189, 189]],
-
-        [[ 96, 105, 122,  ..., 170, 179, 174],
-         [121, 134, 148,  ..., 167, 172, 171],
-         [148, 159, 171,  ..., 172, 175, 166],
-         ...,
-         [213, 214, 214,  ..., 215, 215, 216],
-         [216, 213, 214,  ..., 216, 215, 216],
-         [216, 214, 215,  ..., 216, 215, 216]],
-
-        [[133, 150, 165,  ..., 142, 152, 147],
-         [165, 179, 188,  ..., 153, 135, 154],
-         [185, 195, 203,  ..., 148, 140, 135],
-         ...,
-         [232, 233, 233,  ..., 233, 234, 234],
-         [234, 233, 233,  ..., 232, 232, 233],
-         [234, 234, 235,  ..., 231, 232, 233]]], dtype=torch.uint8)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1663,7 +1625,7 @@ Let's take a quick look on the preprocessing used for training and there corresp
 <div class="text_cell_render border-box-sizing rendered_html">
 <p></p>
 <div class="flash">
-    <svg class="octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+    <svg class="octicon octicon-info octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
     <strong>Note: </strong>I am using <a href="https://github.com/uploadcare/pillow-simd">pillow-simd</a> with AVX enabled.
 </div>
 
